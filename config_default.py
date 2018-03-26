@@ -248,7 +248,7 @@ human_ip_verification_default_whitelist_networks = (
 
 )
 
-human_ip_verification_title = '本网站只有内部人员才可以访问 | This site was only available for our members'
+human_ip_verification_title = 'This site was only available for our members'
 human_ip_verification_success_msg = 'Verify Success! \n You will not be asked again for 30 days'
 
 # Please make sure you have write permission.
