@@ -2304,8 +2304,8 @@ def ip_ban_verify_page():
         </head>
         <body>
           <h1>%s</h1>
-          <p>这样的验证只会出现一次，通过后您会被加入白名单，之后相同IP的访问不会再需要验证。<br/>
-          提示: 由于手机和宽带IP经常会发生改变，您可能会多次看到这一页面。</p>
+          <p><br/>
+          </p>
           %s <br>
           <pre style="border: 1px dashed;">%s</pre>
           <form method='post'>%s<button type='submit'>递交</button>
