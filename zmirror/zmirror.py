@@ -23,6 +23,7 @@ import requests
 from flask import Flask, request, make_response, Response, redirect
 from . import CONSTS
 
+print("zmirror.py file start")
 try:
     # for python 3.5+ Type Hint
     from typing import Union, List, Any, Tuple
@@ -2590,8 +2591,9 @@ if enable_cron_tasks:
     th = threading.Thread(target=cron_task_host, daemon=True)
     th.start()
 
-# ################# End Post (auto)Exec Section #################
+print("zmirror.py file stop")
 
+# ################# End Post (auto)Exec Section #################
 if __name__ == '__main__':
     errprint('Please use `python3 wsgi.py` to run')
     exit()

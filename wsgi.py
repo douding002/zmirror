@@ -23,6 +23,8 @@ def main():
     if my_host_port is None:
         my_host_port = 80
     try:
+	#zmirror.py  *** Flask app ****
+        print("Flask app run")
         application.run(
             port=my_host_port,
 
