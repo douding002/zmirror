@@ -40,6 +40,10 @@ target_scheme = 'https://'
 # 实际镜像一个新的站时, 手动只需要添加很少的几个域名就可以了.
 # 自动采集(如果开启的话)会不断告诉你新域名
 external_domains = (
+    'twitter.com',
+    'mobile.twitter.com',
+    't.co',
+    
     'www.google.com',
     'webcache.googleusercontent.com',  # Google网页快照
     'images.google.com.hk',
@@ -220,7 +224,7 @@ force_https_domains = 'ALL'
 # 自动动态添加域名
 enable_automatic_domains_whitelist = True
 domains_whitelist_auto_add_glob_list = (
-    '*.google.com', '*.gstatic.com', '*.google.com.hk', '*.googleapis.com', "*.googleusercontent.com",)
+    '*.google.com', '*.gstatic.com', '*.google.com.hk', '*.googleapis.com', "*.googleusercontent.com",'*.twitter.com','*.twimg.com',)
 
 # ############## Proxy Settings ##############
 # 如果你在墙内使用本配置文件, 请指定一个墙外的http代理
