@@ -2424,7 +2424,7 @@ def main_function(input_path='/'):
     """本程序的实际入口函数
     :rtype: Response
     """
-    dbgprint('-----BeginRequest-----')
+    print('-----BeginRequest-----')
 
     # parse 类似于 flask 的 request, 是 zmirror 特有的一个 thread-local 变量
     # 这个变量的重要性不亚于 request, 在 zmirror 各个部分都会用到
@@ -2434,7 +2434,7 @@ def main_function(input_path='/'):
     parse.time["start_time"] = process_time()  # to display compute time
 
     # 将用户请求的URL解析为对应的目标服务器URL
-    print("1")
+    print("1 assemble parse")
     assemble_parse()
 
     # 对用户请求进行检查和过滤
@@ -2475,28 +2475,28 @@ def main_function(input_path='/'):
     #    return r
 
     # 解析并重写浏览器请求的data内容
-    print("2")
+    print("2 parse request data")
     parse.request_data, parse.request_data_encoding = prepare_client_request_data()
 
     # 请求真正的远程服务器
     # 并在返回404/500时进行 domain_guess 尝试
     # domain_guess的解释请看函数 guess_correct_domain() 中的注释
-    print("3")
+    print("3 request remote site")
     request_remote_site()
 
     # 解析远程服务器的响应
-    print("4")
+    print("4 parse remote response")
     parse_remote_response()
 
     # 生成我们的响应
-    print("5")
+    print("5 generate our response")
     resp = generate_our_response()
 
     # storge entire our server's response (headers included)
     if local_cache_enable and parse.cacheable:
         put_response_to_local_cache(parse.remote_url, resp, without_content=parse.streamed_our_response)
 
-    dbgprint('-----EndRequest-----')
+    print('-----EndRequest-----')
     return resp
 
 
