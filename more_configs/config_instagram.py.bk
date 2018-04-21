@@ -20,7 +20,7 @@ my_host_scheme = 'http://'
 my_host_port = None  # None表示使用默认端口, 可以设置成非标准端口, 比如 81
 
 # ############## Target Domain Settings ##############
-target_domain = 'www.t66y.com'
+target_domain = 'www.instagram.com'
 target_scheme = 'https://'
 
 # 这里面大部分域名都是通过 `enable_automatic_domains_whitelist` 自动采集的, 我只是把它们复制黏贴到了这里
@@ -28,7 +28,7 @@ target_scheme = 'https://'
 # 自动采集会不断告诉你新域名
 external_domains = (
     # 下面的 `Automatic Domains Whitelist` 功能会自动检测并添加其他的子域名
-    'www.t66y.com',
+    'instagramstatic-a.akamaihd.net',
     'scontent.cdninstagram.com',
     'help.instagram.com',
     'blog.instagram.com',
@@ -64,7 +64,7 @@ force_https_domains = 'ALL'
 
 enable_automatic_domains_whitelist = True
 domains_whitelist_auto_add_glob_list = (
-    '*.*.*', '*.t66y.com', '*.facebook.net', '*.akamaihd.net', '*.instagram.com', '*.cdninstagram.com')
+    '*.facebook.com', '*.fbcdn.net', '*.facebook.net', '*.akamaihd.net', '*.instagram.com', '*.cdninstagram.com')
 
 # ############## Proxy Settings ##############
 # 如果你在墙内使用本配置文件, 请指定一个墙外的http代理
