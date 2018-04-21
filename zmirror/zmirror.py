@@ -2424,7 +2424,7 @@ def main_function(input_path='/'):
     """本程序的实际入口函数
     :rtype: Response
     """
-    print('-----BeginRequest-----')
+    dbgprint('-----BeginRequest-----')
 
     # parse 类似于 flask 的 request, 是 zmirror 特有的一个 thread-local 变量
     # 这个变量的重要性不亚于 request, 在 zmirror 各个部分都会用到
@@ -2452,7 +2452,7 @@ def main_function(input_path='/'):
         # 如果返回的是None, 则表示未发生重定向, 照常继续
         # 如果返回的是一个flask Response 对象, 则表示需要进行重定向, 原样返回此对象即可
         # 下同
-       return r
+        return r
 
     # 进行请求的隐式重写/重定向
     # 隐式重写只对 zmirror 内部生效, 对浏览器透明
@@ -2462,7 +2462,7 @@ def main_function(input_path='/'):
 
     # 第一层SSRF检查, 防止请求不允许的网站
     if ssrf_check_layer_1():
-       return generate_simple_resp_page(b'SSRF Prevention! Your domain is NOT ALLOWED.', 403)
+        return generate_simple_resp_page(b'SSRF Prevention! Your domain is NOT ALLOWED.', 403)
 
     # 提取出经过必要重写后的浏览器请求头
     parse.client_header = extract_client_header()  # type: dict
@@ -2474,28 +2474,24 @@ def main_function(input_path='/'):
         return r
 
     # 解析并重写浏览器请求的data内容
-    print("2 parse request data")
     parse.request_data, parse.request_data_encoding = prepare_client_request_data()
 
     # 请求真正的远程服务器
     # 并在返回404/500时进行 domain_guess 尝试
     # domain_guess的解释请看函数 guess_correct_domain() 中的注释
-    print("3 request remote site")
     request_remote_site()
 
     # 解析远程服务器的响应
-    print("4 parse remote response")
     parse_remote_response()
 
     # 生成我们的响应
-    print("5 generate our response")
     resp = generate_our_response()
 
     # storge entire our server's response (headers included)
     if local_cache_enable and parse.cacheable:
         put_response_to_local_cache(parse.remote_url, resp, without_content=parse.streamed_our_response)
 
-    print('-----EndRequest-----')
+    dbgprint('-----EndRequest-----')
     return resp
 
 
