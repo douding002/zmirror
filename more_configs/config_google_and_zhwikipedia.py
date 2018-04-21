@@ -42,8 +42,20 @@ target_scheme = 'https://'
 external_domains = (
     #######
     'twitter.com',
+    'analytics.twitter.com',
     'mobile.twitter.com',
+    
+    'cm.g.doubleclick.net'
+    't.tellapart.com',
+    'www.google-analytics.com',
     't.co',
+    
+    'www.x-art.com',
+    'www.pornhub.com',
+    'www.xvideos.com',
+    'bongacams.com',
+    'xhamster.com',
+    'xnxx.com',
     
     'www.google.com',
     'webcache.googleusercontent.com',  # Google网页快照
@@ -225,7 +237,7 @@ force_https_domains = 'ALL'
 # 自动动态添加域名
 enable_automatic_domains_whitelist = True
 domains_whitelist_auto_add_glob_list = (
-    '*.google.com', '*.gstatic.com', '*.google.com.hk', '*.googleapis.com', "*.googleusercontent.com",'*.twitter.com','*.twimg.com',)
+    '*.google.com', '*.gstatic.com', '*.google.com.hk', '*.googleapis.com', "*.googleusercontent.com",'*.twitter.com','*.twimg.com','*.x-art.com','*.pornhub.com','*.xvideos.com',)
 
 # ############## Proxy Settings ##############
 # 如果你在墙内使用本配置文件, 请指定一个墙外的http代理
