@@ -2434,45 +2434,44 @@ def main_function(input_path='/'):
     parse.time["start_time"] = process_time()  # to display compute time
 
     # 将用户请求的URL解析为对应的目标服务器URL
-    print("1 assemble parse")
     assemble_parse()
 
     # 对用户请求进行检查和过滤
     # 不符合条件的请求(比如爬虫)将终止执行
     # 函数不会修改 parse
-    #r = filter_client_request()
-    #if r is not None:  # 如果函数返回值不是None, 则表示需要响应给用户
-    #    dbgprint('-----EndRequest(filtered out)-----')
-    #    return r
+    r = filter_client_request()
+    if r is not None:  # 如果函数返回值不是None, 则表示需要响应给用户
+        dbgprint('-----EndRequest(filtered out)-----')
+        return r
 
     # 对用户请求进行第一级重定向(隐式重写前的重定向)
     # 函数不会修改 parse
     # 此重定向对用户可见, 是301/302/307重定向
-    #r = prior_request_redirect()
-    #if r is not None:
+    r = prior_request_redirect()
+    if r is not None:
         # 如果返回的是None, 则表示未发生重定向, 照常继续
         # 如果返回的是一个flask Response 对象, 则表示需要进行重定向, 原样返回此对象即可
         # 下同
-    #   return r
+       return r
 
     # 进行请求的隐式重写/重定向
     # 隐式重写只对 zmirror 内部生效, 对浏览器透明
     # 重写可能会修改 flask 的内置 request 变量
     # 可能会修改 parse
-    #has_been_rewrited = rewrite_client_request()
+    has_been_rewrited = rewrite_client_request()
 
     # 第一层SSRF检查, 防止请求不允许的网站
-    #if ssrf_check_layer_1():
-    #   return generate_simple_resp_page(b'SSRF Prevention! Your domain is NOT ALLOWED.', 403)
+    if ssrf_check_layer_1():
+       return generate_simple_resp_page(b'SSRF Prevention! Your domain is NOT ALLOWED.', 403)
 
     # 提取出经过必要重写后的浏览器请求头
-    #parse.client_header = extract_client_header()  # type: dict
+    parse.client_header = extract_client_header()  # type: dict
 
     # 对用户请求进行第二级重定向(隐式重写后的重定向)
     # 与一级重定向一样, 是301/302/307重定向
-    #r = posterior_request_redirect()
-    #if r is not None:
-    #    return r
+    r = posterior_request_redirect()
+    if r is not None:
+        return r
 
     # 解析并重写浏览器请求的data内容
     print("2 parse request data")
