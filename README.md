@@ -1,3 +1,7 @@
+## 500 Internal Server Error
+Internal Server Error
+The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+
 # app.route 
 - @app.route('/zmirror_stat')
     def zmirror_status():           返回服务器的一些状态信息
