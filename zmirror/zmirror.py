@@ -23,7 +23,11 @@ import requests
 from flask import Flask, request, make_response, Response, redirect
 from . import CONSTS
 
-print("zmirror.py file start")
+debug_show = True
+
+if debug_show: 
+    print("zmirror.py start")
+
 try:
     # for python 3.5+ Type Hint
     from typing import Union, List, Any, Tuple
@@ -116,7 +120,9 @@ if local_cache_enable:
 
 # ########## Basic Init #############
 # 开始从配置文件加载配置, 在读代码时可以先跳过这部分, 从 main_function() 开始看
-print("zmirror.py base init")
+if debug_show:
+    print("zmirror.py base init")
+
 ColorfulPyPrint_set_verbose_level(verbose_level)
 
 if developer_enable_experimental_feature:  # coverage: exclude
@@ -168,6 +174,8 @@ target_domain_root = extract_root_domain(target_domain)[0]  # type: str
 my_host_name_root = extract_root_domain(target_domain)[0]  # type: str
 
 # ########## Handle dependencies #############
+if debug_show:
+    print("zmirror.py Handle dependencies")
 
 if not enable_stream_content_transfer:
     steamed_mime_keywords = ()
@@ -782,6 +790,8 @@ def add_ssrf_allowed_domain(domain):
 
 
 def dump_zmirror_snapshot(folder="error_dump", msg=None, our_response=None):
+    if debug_show:
+        print("11.2 dump当前状态到文件")
     """
     dump当前状态到文件
     :param folder: 文件夹名
@@ -976,6 +986,8 @@ def update_content_in_local_cache(url, content, method='GET'):
 
 
 def put_response_to_local_cache(url, _our_resp, without_content=False):
+    if debug_show:
+        print("12 存储服务器的整个响应")
     """
     put our response object(headers included) to local cache
     :param without_content: for stream mode use
@@ -1329,6 +1341,8 @@ def iter_streamed_response_async():
 
 
 def copy_response(is_streamed=False):
+    if debug_show:
+        print("11.1 复制响应")
     """
     Copy and parse remote server's response headers, generate our flask response object
 
@@ -1585,6 +1599,8 @@ def assemble_remote_url():
 
 
 def ssrf_check_layer_1():
+    if debug_show:
+        print("5 第一层SSRF检查, 防止请求不允许的网站")
     """
     SSRF防护, 第一层, 在请求刚开始时被调用, 检查域名是否允许
     :return: 如果请求触发了SSRF防护, 则返回True
@@ -1602,6 +1618,8 @@ def ssrf_check_layer_1():
 
 
 def extract_client_header():
+    if debug_show:
+        print("6 提取出经过必要重写后的浏览器请求头")
     """
     Extract necessary client header, filter out some.
 
@@ -1739,6 +1757,8 @@ def extract_url_path_and_query(full_url=None, no_query=False):
 
 # ################# Begin Middle Functions #################
 def send_request(url, method='GET', headers=None, param_get=None, data=None):
+    if debug_show:
+        print("9.1 发送请求到目标服务器")
     """实际发送请求到目标服务器, 对于重定向, 原样返回给用户
     被request_remote_site_and_parse()调用"""
     final_hostname = urlsplit(url).netloc
@@ -1791,6 +1811,8 @@ def send_request(url, method='GET', headers=None, param_get=None, data=None):
 
 
 def prepare_client_request_data():
+    if debug_show:
+        print("8 **解析并重写浏览器请求的data内容**")
     """
     解析出浏览者发送过来的data, 如果是文本, 则进行重写
     如果是文本, 则对文本内容进行重写后返回str
@@ -1824,6 +1846,8 @@ def prepare_client_request_data():
 
 
 def generate_our_response():
+    if debug_show:
+        print("11 **生成我们的响应** ")
     """
     生成我们的响应
     :rtype: Response
@@ -1848,6 +1872,8 @@ def generate_our_response():
 
 
 def parse_remote_response():
+    if debug_show:
+        print("10 **解析远程服务器的响应**")
     """处理远程服务器的响应"""
     # extract response's mime to thread local var
     parse.content_type = parse.remote_response.headers.get('Content-Type', '')
@@ -1909,6 +1935,8 @@ def parse_remote_response():
 
 
 def guess_correct_domain(depth=7):
+    if debug_show:
+        print("9.2 返回404/500时进行 domain_guess 尝试")
     """
     猜测url所对应的正确域名
     当响应码为 404 或 500 时, 很有可能是把请求发送到了错误的域名
@@ -2001,6 +2029,8 @@ def guess_correct_domain(depth=7):
 
 
 def request_remote_site():
+    if debug_show:
+        print("9 **请求真正的远程服务器**")
     """
     请求远程服务器(high-level), 并在返回404/500时进行 domain_guess 尝试
     """
@@ -2027,9 +2057,12 @@ def request_remote_site():
 
 
 def filter_client_request():
-    """过滤用户请求, 视情况拒绝用户的访问
+    """
     :rtype: Union[Response, None]
     """
+    if debug_show:
+        print("2 对用户请求进行检查和过滤,不符合条件的请求(比如爬虫)将终止执行")
+
     dbgprint('Client Request Url: ', request.url)
 
     # crossdomain.xml
@@ -2066,7 +2099,9 @@ def filter_client_request():
 
 
 def prior_request_redirect():
-    """对用户的请求进行按需重定向处理
+    if debug_show:
+        print("3 对用户请求进行第一级重定向(隐式重写前的重定向),如果返回的是None, 照常继续")
+    """
     与 rewrite_client_request() 不同, 使用301/307等进行外部重定向, 不改变服务器内部数据
     遇到任意一个需要重定向的, 就跳出本函数
 
@@ -2114,6 +2149,8 @@ def prior_request_redirect():
 
 
 def posterior_request_redirect():
+    if debug_show:
+        print("7 对用户请求进行第二级重定向(隐式重写后的重定向),如果返回的是None, 照常继续")
     """
     这是第二阶段重定向, 内部隐式重写 *之后* 的重定向
     第一阶段重定向, 是在 rewrite_client_request() 内部隐式重写 *之前* 的重定向
@@ -2177,8 +2214,9 @@ def posterior_request_redirect():
         return redirect(rewrited_url, code=307)
 
 
-def assemble_parse():
-    """将用户请求的URL解析为对应的目标服务器URL"""
+def assemble_parse():    ## 1
+    if debug_show:
+        print("1 **将用户请求的URL解析为对应的目标服务器URL**")
     _temp = decode_mirror_url()
     parse.remote_domain = _temp['domain']  # type: str
     parse.is_https = _temp['is_https']  # type: bool
@@ -2193,7 +2231,9 @@ def assemble_parse():
     dbgprint('after assemble_parse, url:', parse.remote_url, '   path_query:', parse.remote_path_query)
 
 
-def rewrite_client_request():
+def rewrite_client_request():   ## 4
+    if debug_show:
+        print("4 进行请求的隐式重写/重定向")
     """
     在这里的所有重写都只作用程序内部, 对请求者不可见
     与 prior_request_redirect() 的外部301/307重定向不同,
@@ -2250,6 +2290,8 @@ def zmirror_after_request(response):
 # ################# End Flask After Request ################
 
 # ################# Begin Flask #################
+if debug_show:
+    print("zmirror.py Begin Flash")
 @app.route('/zmirror_stat')
 def zmirror_status():
     """返回服务器的一些状态信息"""
@@ -2405,7 +2447,6 @@ def zmirror_enter(input_path='/'):
     """入口函数的壳, 只是包了一层异常处理, 实际是 main_function() """
     try:
         resp = main_function(input_path=input_path)
-
         # 加入额外的响应头
         for name, value in parse.extra_resp_headers.items():
             resp.headers.set(name, value)
@@ -2422,6 +2463,8 @@ def zmirror_enter(input_path='/'):
 
 # noinspection PyUnusedLocal
 def main_function(input_path='/'):
+    if debug_show:
+        print("zmirror.py main_function start")
     """本程序的实际入口函数
     :rtype: Response
     """
@@ -2434,20 +2477,16 @@ def main_function(input_path='/'):
     parse.method = request.method
     parse.time["start_time"] = process_time()  # to display compute time
 
-    # 将用户请求的URL解析为对应的目标服务器URL
-    assemble_parse()
+    ## 1 将用户请求的URL解析为对应的目标服务器URL
+    assemble_parse()             
 
-    # 对用户请求进行检查和过滤
-    # 不符合条件的请求(比如爬虫)将终止执行
-    # 函数不会修改 parse
-    r = filter_client_request()
+    ## 2 对用户请求进行检查和过滤 # 不符合条件的请求(比如爬虫)将终止执行# 函数不会修改 parse
+    r = filter_client_request()  
     if r is not None:  # 如果函数返回值不是None, 则表示需要响应给用户
         dbgprint('-----EndRequest(filtered out)-----')
         return r
 
-    # 对用户请求进行第一级重定向(隐式重写前的重定向)
-    # 函数不会修改 parse
-    # 此重定向对用户可见, 是301/302/307重定向
+    ## 3 对用户请求进行第一级重定向(隐式重写前的重定向) # 函数不会修改 parse  # 此重定向对用户可见, 是301/302/307重定向
     r = prior_request_redirect()
     if r is not None:
         # 如果返回的是None, 则表示未发生重定向, 照常继续
@@ -2455,44 +2494,44 @@ def main_function(input_path='/'):
         # 下同
         return r
 
-    # 进行请求的隐式重写/重定向
-    # 隐式重写只对 zmirror 内部生效, 对浏览器透明
-    # 重写可能会修改 flask 的内置 request 变量
-    # 可能会修改 parse
+    ## 4 进行请求的隐式重写/重定向 # 隐式重写只对 zmirror 内部生效, 对浏览器透明 # 重写可能会修改 flask 的内置 request 变量 # 可能会修改 parse
     has_been_rewrited = rewrite_client_request()
 
-    # 第一层SSRF检查, 防止请求不允许的网站
+    ## 5 第一层SSRF检查, 防止请求不允许的网站
     if ssrf_check_layer_1():
         return generate_simple_resp_page(b'SSRF Prevention! Your domain is NOT ALLOWED.', 403)
 
-    # 提取出经过必要重写后的浏览器请求头
+    ## 6 提取出经过必要重写后的浏览器请求头
     parse.client_header = extract_client_header()  # type: dict
 
-    # 对用户请求进行第二级重定向(隐式重写后的重定向)
+    ## 7 对用户请求进行第二级重定向(隐式重写后的重定向)
     # 与一级重定向一样, 是301/302/307重定向
     r = posterior_request_redirect()
     if r is not None:
         return r
 
-    # 解析并重写浏览器请求的data内容
+    ## 8 解析并重写浏览器请求的data内容
     parse.request_data, parse.request_data_encoding = prepare_client_request_data()
 
-    # 请求真正的远程服务器
+    ## 9 请求真正的远程服务器
     # 并在返回404/500时进行 domain_guess 尝试
     # domain_guess的解释请看函数 guess_correct_domain() 中的注释
     request_remote_site()
 
-    # 解析远程服务器的响应
+    ## 10 解析远程服务器的响应
     parse_remote_response()
 
-    # 生成我们的响应
+    ## 11 生成我们的响应
     resp = generate_our_response()
 
     # storge entire our server's response (headers included)
     if local_cache_enable and parse.cacheable:
+        ## 12 存储服务器的整个响应
         put_response_to_local_cache(parse.remote_url, resp, without_content=parse.streamed_our_response)
 
     dbgprint('-----EndRequest-----')
+    if debug_show:
+        print("zmirror main_function stop")
     return resp
 
 
@@ -2524,6 +2563,8 @@ This site: {my_domain}
 
 
 # ################# End Flask #################
+if debug_show:
+    print("zmirror.py End Flask")
 
 # ################# Begin Post (auto)Exec Section #################
 
@@ -2587,9 +2628,10 @@ if enable_cron_tasks:
     th = threading.Thread(target=cron_task_host, daemon=True)
     th.start()
 
-print("zmirror.py file stop")
-
 # ################# End Post (auto)Exec Section #################
+if debug_show:
+    print("zmirror.py End")
+
 if __name__ == '__main__':
     errprint('Please use `python3 wsgi.py` to run')
     exit()
