@@ -116,6 +116,7 @@ if local_cache_enable:
 
 # ########## Basic Init #############
 # 开始从配置文件加载配置, 在读代码时可以先跳过这部分, 从 main_function() 开始看
+print("zmirror.py base init")
 ColorfulPyPrint_set_verbose_level(verbose_level)
 
 if developer_enable_experimental_feature:  # coverage: exclude

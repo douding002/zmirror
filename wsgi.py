@@ -12,6 +12,7 @@ __author__ = 'Aploium <i@z.codes>'
 
 
 def main():
+    print("wsgi.py main start")
     from zmirror.zmirror import my_host_port, built_in_server_host, \
         built_in_server_debug, built_in_server_extra_params, warnprint, \
         errprint
@@ -23,8 +24,7 @@ def main():
     if my_host_port is None:
         my_host_port = 80
     try:
-	#zmirror.py  *** Flask app ****
-        print("Flask app run")
+        print("wsgi.py flask app run")
         application.run(
             port=my_host_port,
 
