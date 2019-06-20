@@ -1,0 +1,242 @@
+# zmirror<br>
+[![zmirror version](https://img.shields.io/badge/version-0.29.4-blue.svg)](https://github.com/aploium/zmirror)<br>
+[![zmirror Build Status](https://travis-ci.org/aploium/zmirror.svg?branch=master)](https://travis-ci.org/aploium/zmirror)<br>
+[![zmirror unittest coverage](https://codecov.io/gh/aploium/zmirror/branch/master/graph/badge.svg)](https://codecov.io/gh/aploium/zmirror)<br>
+[![zmirror Dependency Status](https://www.versioneye.com/user/projects/57addd5358ae9200345e108c/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57addd5358ae9200345e108c)  <br>
+[![zmirror PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)<br>
+[![zmirror Gitter](https://badges.gitter.im/zmirror/zmirror.svg)](https://gitter.im/zmirror/zmirror?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)  <br>
+<br>
+an http reverse proxy designed to automatically and completely mirror a website (such as google), support cache and CDN  <br>
+一个Python反向HTTP代理程序, 用于快速、简单地创建别的网站的镜像, 自带本地文件缓存、CDN支持  <br>
+比如国内可以访问的Google镜像/中文维基镜像  <br>
+<br>
+自带了几个配置文件: 比如 Google镜像(含学术/其他/中文维基) twitter镜像 Youtube镜像 instagram镜像 Facebook镜像  <br>
+完整列表请看[zmirror自带镜像配置文件](more_configs/readme.md)  <br>
+<br>
+**请在遵守当地相关法律法规的前提下使用本项目**  <br>
+**本人拒绝为任何商业或非法目的提供任何技术支持**  <br>
+**本项目仅为科研人员更方便地查询知识而创建, 请勿大范围传播**<br>
+<br>
+若想看代码, 请看 `v0.30-dev` 这个分支  <br>
+请不要大量使用...demo服务器马上要爆炸了- -|  <br>
+<br>
+<br>
+## Demo<br>
+<br>
+* **Google**  <br>
+    * *网页搜索*   https://g.zmirrordemo.com  <br>
+    * *Scholar*   https://g.zmirrordemo.com/scholar  <br>
+    * *Image*   https://g.zmirrordemo.com/imghp  <br>
+    * *Gmail*   https://g.zmirrordemo.com/gmail  (请选择"使用基本HTML"版本)  <br>
+<br>
+* **中文维基**  <br>
+    * *(PC & Mobile)*  https://g.zmirrordemo.com/wiki  <br>
+<br>
+* **Youtube**  <br>
+    * *PC Only*  https://ytb-pc.zmirrordemo.com  <br>
+    　　Youtube访问需要密码, 请解密此串得到密码`WmhlamlhbmdVbml2ZXJzaXR5` 如果您无法解密, 很抱歉Youtube镜像不对您开放  <br>
+    * *Mobile Only* <del> https://ytb-mobile.zmirrordemo.com </del> 暂不开放  <br>
+    　　Youtube Mobile 不支持iOS<br>
+* **Twitter**<br>
+    * *PC Only*  https://t-pc.zmirrordemo.com  <br>
+    * *Mobile Only*  https://t-mobile.zmirrordemo.com<br>
+* **Instagram**<br>
+    * *PC & Mobile*  https://in.zmirrordemo.com  <br>
+* **Facebook**<br>
+    * *PC Only*  https://fb.zmirrordemo.com  <br>
+    　　绝大部分功能可用, 但是不完整  <br>
+<br>
+## Screenshot<br>
+![zmirror-screenshot-youtube-mirror--1080P](https://github.com/aploium/zmirror/raw/wiki-pages/img/screenshot-youtube-1080p.jpg)  <br>
+More screenshots are here: [wiki-screenshots](https://github.com/aploium/zmirror/wiki/Screenshots)  <br>
+<br>
+## 一键部署脚本<br>
+https://github.com/aploium/zmirror-onekey  <br>
+一键部署脚本仍然不稳定, 如果怎么弄都失败, 请看[手动教程](https://github.com/aploium/zmirror/wiki/%E9%83%A8%E7%BD%B2%E6%94%AF%E6%8C%81HTTPS%E5%92%8CHTTP2.0%E7%9A%84%E9%95%9C%E5%83%8F)  <br>
+<br>
+## builtin configs<br>
+Together with the program, provided several (almost) out-of-box configs  <br>
+ <br>
+### Google镜像 (整合中文维基镜像)<br>
+  * **Gmail支持!** (请访问 /gmail 并选择基础html视图)<br>
+  * 同时支持PC/手机  <br>
+  * Google搜索与中文维基百科无缝结合  <br>
+  * 大部分功能完全正常: 网页搜索/学术/图片/地图/新闻/图书/视频(搜索)/财经/APP搜索/翻译/网页快照/...<br>
+  * 目前暂时无法做到完美的登陆, 登录才可使用的功能部分无效<br>
+  * 不会被Google Ban掉  <br>
+    　　　传统的Nginx反代Google方案, 时间长了会被Google Ban掉, 或者弹图片验证码,   <br>
+    　这是由于Nginx反代镜像非常简陋, 用户的许多请求无法被正确发回到Google服务器,  <br>
+    　Google就会把真实的访问者当成是机器人.  <br>
+    　　　而zmirror比较完善, 用户的请求能全部发回到Google服务器, 不会被当成机器人  <br>
+<br>
+### Twitter镜像<br>
+  * 支持PC站/手机  (两者需要以不同的域名部署, 详见配置)  <br>
+  * 几乎所有功能完整可用, 大部分视频可以播放  <br>
+<br>
+### Instagram镜像  <br>
+  * 所有功能完整可用, 包括视频  <br>
+<br>
+### Youtube镜像<br>
+  * 支持PC站/手机  (两者需要以不同的域名部署, 详见配置)  <br>
+  * 视频播放、高清支持  <br>
+  * 登陆支持、字幕支持  <br>
+  * 小视频上传支持  <br>
+<br>
+### Facebook镜像<br>
+  * 绝大部分功能可用, 但是不完整  <br>
+<br>
+### 自带其他的镜像配置文件<br>
+  * archive.org镜像  <br>
+  * duckduckgo镜像  <br>
+  * Dropbox镜像  <br>
+  * Tumblr镜像  <br>
+  * Economist(经济学人)镜像  <br>
+  * thepiratebay(海盗湾)镜像  <br>
+  * For more information, please see [more_configs/readme.md](more_configs/readme.md)  <br>
+  <br>
+  <br>
+## Requirements Install and Usage<br>
+<br>
+### Dependencies<br>
+#### Required<br>
+* Python 3.4/3.5/3.6+<br>
+* [flask](http://flask.pocoo.org/)<br>
+* [requests](http://python-requests.org/)<br>
+<br>
+#### Optional<br>
+* [cChardet](https://github.com/PyYoshi/cChardet) 编码检测<br>
+* [fastcache](https://github.com/pbrady/fastcache) C implementation of Python 3 lru_cache<br>
+* [lru-dict](https://github.com/amitdev/lru-dict) A fast and memory efficient LRU dict for Python<br>
+<br>
+<br>
+Theoretically, any environment that can run Python3.4+, can also run zmirror  <br>
+Nginx was not officially tested, but it should work pretty well.  <br>
+<br>
+However, due to my limited time, zmirror was only fully tested in:  <br>
+<br>
+    Ubuntu14.04-x86_64 Apache2.4 wsgi python3.4<br>
+    Ubuntu16.04-x86_64 Apache2.4 wsgi python3.5<br>
+    windows10-x64 Apache2.4 wsgi python3.5-x64<br>
+    <br>
+    Ubuntu14.04-x86_64 directly run (I mean, just execute python3 wsgi.py)<br>
+    windows10-x64 directly run <br>
+<br>
+<br>
+### Installation and helloworld<br>
+> This tutorial is mainly for your *localhost* demo test  <br>
+ If you want to deploy it to server, please complete the *localhost* demo first  <br>
+<br>
+1. first, install python3  <br>
+    **Debian/Ubuntu**  `apt-get install python3`  <br>
+    **Windows**   go to [python's homepage](https://www.python.org/downloads/) and download Python3.5 (or newer)  <br>
+2. install or upgrade flask and requests `python3 -m pip install -U flask requests`  <br>
+3. `git clone https://github.com/aploium/zmirror`  <br>
+4. **copy** the `config_default.py` to `config.py`  <br>
+<br>
+    > **Warning: You should NEVER EVER modify the `config_default.py` itself**  <br>
+    > Please edit the `config.py` instead of `config_default.py`  <br>
+    > Unless your are developer.  <br>
+    > Settings in the `config.py` would override the default ones  <br>
+<br>
+5. Execute it: `python3 wsgi.py`  <br>
+6. Open your browser and enter `http://127.0.0.1/`, you will see exactly the `www.kernel.org`, and you can click and browse around. everything of the `*.kernel.org` is withing the mirror.  <br>
+7. please see the following [Deploy](#deploy) section  <br>
+<br>
+#### Deploy<br>
+<br>
+请使用: [一键部署脚本](https://github.com/aploium/zmirror-onekey)  <br>
+<br>
+若希望手工部署, 可以看以下教程:  <br>
+<br>
+1. [部署支持HTTPS和HTTP/2的zmirror镜像](https://github.com/aploium/zmirror/wiki/%E9%83%A8%E7%BD%B2%E6%94%AF%E6%8C%81HTTPS%E5%92%8CHTTP2.0%E7%9A%84%E9%95%9C%E5%83%8F)  <br>
+2. [在一台VPS部署多个zmirror镜像](https://github.com/aploium/zmirror/wiki/%E5%9C%A8%E4%B8%80%E5%8F%B0VPS%E9%83%A8%E7%BD%B2%E5%A4%9A%E4%B8%AAzmirror%E9%95%9C%E5%83%8F)  <br>
+<br>
+在Nginx下部署, 请看[这里](https://github.com/aploium/zmirror/issues/36)(感谢@phuslu)     <br>
+<br>
+Or, if you are familiar with flask, you can see [flask's official deploy tutorial](http://flask.pocoo.org/docs/0.11/deploying/)  <br>
+<br>
+### Upgrade<br>
+ - `cd YOUR_ZMIRROR_FOLDER` and then `git pull`<br>
+<br>
+    > **警告**  <br>
+    > 由于 v0.27 有很大的结构改动, 所以 v0.27 以内的 custom_func.py 如果有 `from zmirror import ` 语句  <br>
+    > 将无法在 v0.27 以后的版本工作  <br>
+    > 解决办法是将 custom_func.py 中的 `from zmirror import ` 修改为  <br>
+    > `from zmirror.zmirror import ` 其他不需要改变  <br>
+    > 若使用自带配置文件, 则只有Youtube和Twitter受影响  <br>
+<br>
+<br>
+## Feature<br>
+ 1. Completely mirror, provide some (almost) out-of-box configs  <br>
+  创建非常完整的镜像, 既支持古老的网站(比如内网网站), 也支持巨型的现代化的网站  <br>
+  提供几个(几乎)开箱即用的网站镜像配置文件  <br>
+<br>
+ 2. Mirror ANY website, highly compatible  <br>
+    非常高的兼容性和通用性, 可以镜像 _任意_ 网站, 而不只是Google/Wiki/twitter/instagram, 而且功能都非常完整  <br>
+    并且能很好地适应对现代化的、逻辑复杂、功能庞大的网站  <br>
+    _现在还在开发阶段, 虽然所有网站的绝大部分功能都可以开箱即用, 但是某些网站的某些功能仍然不完整, 正在不断改进_  <br>
+  <br>
+ 3. (MIME-based) Local statistic file cache support (especially useful if we have low bandwidth or high latency)  <br>
+  (基于MIME)本地静态文件缓存支持(当镜像服务器与被镜像服务器之间带宽很小或延迟很大时非常有用)  <br>
+  <br>
+ 4. CDN Support, hot statistic resource can serve by CDN, dramatically increase speed  <br>
+  CDN支持. 让热门静态资源走CDN, 极大提高用户访问速度(特别是使用国内CDN, 而镜像服务器在国外时)  <br>
+  <br>
+ 5. Easy to config and deploy, highly automatic  <br>
+  非常容易配置和部署, 镜像一个网站只需要添加它的域名即可  <br>
+  <br>
+ 6. Access control(IP, user-agent), visitor verification(question answer, or custom verification function)  <br>
+  访问控制(IP, user-agent)与用户验证(回答问题, 也支持写自定义的验证函数)  <br>
+  <br>
+ 7. Automatically rewrite JSON/javascript/html/css, even dynamically generated url can ALSO be handled correctly  <br>
+  自动重写JSON/javascript/html/css中链接, 甚至即使是动态生成的链接, 都能被正确处理  <br>
+  <br>
+ 8. Stream content support (audio/video)  <br>
+  流媒体支持(视频/音频)  <br>
+<br>
+<br>
+## Issues Report<br>
+<br>
+非常欢迎发issues, 发issues找我聊天都欢迎.  <br>
+对于Apache(教程部署的即为Apache), 程序的日志在 `/var/log/apache2/你自定义的日志文件名_error.log` 中    <br>
+<br>
+(以下只是可选步骤)  <br>
+### Report zmirror Internal Error<br>
+当zmirror发生内部错误时(浏览器看到一个Internal Error页面), zmirror会把当前状态的快照保存到 `zmirror安装目录/error_dump/` 中  <br>
+可以使用pickle来读取其中的dump文件.  <br>
+如果存在对应的dump文件, 请在issues中附上  <br>
+<br>
+## Mirror A Website<br>
+_本部分需要重写, 写的很乱, 也有点过时了_<br>
+Mirror a website is very simple.  <br>
+<br>
+Just set the `target_domain` to it's domain, the `external_domains` to it's external domain and sub domains <br>
+such as static resource domains (If it has)  <br>
+save and run, the program will do the other works!   <br>
+<br>
+All detects and rewrites are completely AUTOMATICALLY  <br>
+<br>
+`tips:` you can find a website's external domains by using the developer tools of your browser, it will log all network traffics for you  <br>
+<br>
+## Performance Enhance<br>
+### Local Cache<br>
+  Local file cache (along with 304 support) is implanted and enabled by default  <br>
+  If cache hits, you will see an `x-zmirror-cache: FileHit` in the response header.  <br>
+  Local cache will be deleted and cleaned once program exit.  <br>
+  <br>
+### CDN Support<br>
+  please see [使用七牛作为zmirror镜像的CDN](https://github.com/aploium/zmirror/wiki/%E4%BD%BF%E7%94%A8%E4%B8%83%E7%89%9B%E4%BD%9C%E4%B8%BAzmirror%E9%95%9C%E5%83%8F%E7%9A%84CDN)  <br>
+<br>
+----------------------------------------------------<br>
+<br>
+## Similar Projects<br>
+<br>
+@zxq2233 [youtube-php-mirroring](https://github.com/zxq2233/youtube-php-mirroring)  <br>
+@greatfire [website-mirror-by-proxy](https://github.com/greatfire/website-mirror-by-proxy)  <br>
+@restran [web-proxy](https://github.com/restran/web-proxy)  <br>
+@isayme [isayme/google](https://github.com/isayme/google)  <br>
+@zjuyxy [google200](https://github.com/zjuyxy/google200)  <br>
+@cuber [ngx_http_google_filter_module](https://github.com/cuber/ngx_http_google_filter_module)  <br>
+@arnofeng [ngx_google_deployment](https://github.com/arnofeng/ngx_google_deployment)  <br>
+@imlinhanchao [ngx_proxy_wiki](https://github.com/imlinhanchao/ngx_proxy_wiki)  <br>
+@joymufeng [play-google](https://github.com/joymufeng/play-google)  <br>
